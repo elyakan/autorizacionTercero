@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: AUTORIZACION A TERCEROS
+  description: >-
+    Servico que provee las operaciones necesarias para generar CRUD sobre la
+    tabla TBLAUTORIZACIONTERCEROS, donde se almacena la relacion e historiarl,
+    de terceros relacionados a cotizantes.
+
+    Un tercero es aquel autorizado por el cotizante a obtner los productos
+    FONASA en su nombre.
+  contact:
+    email: carlos.acuna_ext@fonasa.gob.cl
+  version: 1.0.0
+servers:
+  - url: http://fosqa01adminin.fonasa.local:32000/console/login/LoginForm.jsp
+tags:
+  - name: autorizacionterceros
+    description: CRUD
+paths:
+  /autorizacionterceros:
+    put:
+      tags:
+        - autorizacionterceros
+      summary: Actualiza registro, se genera nuevo registro generando historial
+      description: Actualiza registro por ID
+      operationId: updateAutorizacionTerceros
+      requestBody:
+        description: Actualiza registro existente
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutorizacionTerceros'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: ''
+        '404':
+          description: ''
+        '405':
+          description: ''
+    post:
+      tags:
+        - autorizacionterceros
+      summary: Agrega nuevo registro
+      description: Agrega nuevo registro
+      operationId: saveAutorizacionTerceros
+      requestBody:
+        description: Agrega nuevo registro
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutorizacionTerceros'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '405':
+          description: Invalid input
+  /autorizacionterceros/api/:
+    get:
+      tags:
+        - autorizacionterceros
+      summary: Lista todos los registros
+      description: Retorna todos los registros
+      operationId: getAutorizacionTercerosAll
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: available
+            enum:
+              - available
+              - pending
+              - sold
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid status value
+  /autorizacionterceros/api/{Id}:
+    get:
+      tags:
+        - autorizacionterceros
+      summary: Lista regsitros por ID
+      description: retorna registro por ID
+      operationId: geAutorizacionTerceros
+      parameters:
+        - name: Id
+          in: path
+          description: ID registro autorizacion tercero
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid tag value
+  /autorizacionterceros/api/histBen/{rutBeneficiario}:
+    get:
+      tags:
+        - autorizacionterceros
+      summary: Lista registros por RUT benefiaciario
+      description: retorna registros por RUT benefiaciario
+      operationId: getAutorizacionTercerosHistBen
+      parameters:
+        - name: rutBeneficiario
+          in: path
+          description: RUT beneficiario
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: not found
+  /autorizacionterceros/api/histTer/{rutTercero}:
+    get:
+      tags:
+        - autorizacionterceros
+      summary: Lista registros por RUT tercero
+      description: retorna registros por RUT tercero
+      operationId: getAutorizacionTercerosHistTer
+      parameters:
+        - name: rutTercero
+          in: path
+          description: RUT tercero
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: not found
+  /autorizacionterceros/api/histEje/{rutEjecutivo}:
+    get:
+      tags:
+        - autorizacionterceros
+      summary: Lista registros por RUT ejecutivo
+      description: retorna registros por RUT ejecutivo
+      operationId: getAutorizacionTercerosHistEje
+      parameters:
+        - name: rutEjecutivo
+          in: path
+          description: RUT ejecutivo
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: not found
+  /autorizacionterceros/api/:     
+    delete:
+      tags:
+        - autorizacionterceros
+      summary: Elimina registro
+      description: Crea nuevo registro generando historial
+      operationId: delete
+      requestBody:
+        description: Agrega nuevo registro, debe enviar requestBody, como un put o post
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutorizacionTerceros'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/ResponseEntity'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: not found
+components:
+  schemas:
+    AutorizacionTerceros:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        runTercero:
+          type: string
+          example: 3-7
+        runBeneficiario:
+          type: string
+          example: 2-3
+        runEjecutivo:
+          type: string
+          example: 1-9
+        nombreEjecutivo:
+          type: string
+          example: Prueba Prueba Prueba
+        idUsuario:
+          type: string
+          example: USUARIO
+        idRol:
+          type: string
+          example: FSIIS_ADMINISTRADORFONASA
+        codigoDireccionZonal:
+          type: string
+          example: NC
+        codigoRegion:
+          type: string
+          example: '13'
+        codigoComuna:
+          type: string
+          example: '13101'
+        codigoSucursal:
+          type: string
+          example: '900213'
+        idEstado:
+          type: string
+          example: '1'
+          enum:
+            - 1 activo
+            - 0 inactivo
+        fechaTrans:
+          type: string
+          example: dd/mm/yyyy
+        fechaInicio:
+          type: string
+          example: dd/mm/yyyy
+        fechaTermino:
+          type: string
+          example: dd/mm/yyyy
+        idTipoParentesco:
+          type: string
+          example: '1'
+        NOMBRE_TERCERO:
+          type: string
+          example: juan daniel
+        primerApTercero:
+          type: string
+          example: soto
+        segundoApTercero:
+          type: string
+          example: marambio
+    AutorizacionTercerosDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        runTercero:
+          type: string
+          example: 3-7
+        runBeneficiario:
+          type: string
+          example: 2-3
+        runEjecutivo:
+          type: string
+          example: 1-9
+        nombreEjecutivo:
+          type: string
+          example: Prueba Prueba Prueba
+        idUsuario:
+          type: string
+          example: USUARIO
+        idRol:
+          type: string
+          example: FSIIS_ADMINISTRADORFONASA
+        codigoDireccionZonal:
+          type: string
+          example: NC
+        codigoRegion:
+          type: string
+          example: '13'
+        codigoComuna:
+          type: string
+          example: '13101'
+        codigoSucursal:
+          type: string
+          example: '900213'
+        idEstado:
+          type: string
+          example: '1'
+          enum:
+            - 1 activo
+            - 0 inactivo
+        fechaTrans:
+          type: string
+          example: dd/mm/yyyy
+        fechaInicio:
+          type: string
+          example: dd/mm/yyyy
+        fechaTermino:
+          type: string
+          example: dd/mm/yyyy
+        idTipoParentesco:
+          type: string
+          example: '1'
+        NOMBRE_TERCERO:
+          type: string
+          example: juan daniel
+        primerApTercero:
+          type: string
+          example: soto
+        segundoApTercero:
+          type: string
+          example: marambio
+    ResponseEntity:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/AutorizacionTercerosDTO'
+        code:
+          type: string
+      xml:
+        name: '##default'
