@@ -18,4 +18,6 @@ public interface AutorizacionTercerosService {
     AutorizacionTerceros updateAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros);
 
     AutorizacionTerceros deleteAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros);
+
+    Integer getValidaCompraBono(String rutComprador, String rutBeneficiario);
 }

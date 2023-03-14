@@ -5,6 +5,7 @@ import cl.fonasa.autorizacionterceros.services.AutorizacionTercerosService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ class AutorizaciontercerosApplicationTests {
 	@Autowired
 
 	AutorizacionTercerosService autorizacionTercerosService;
-	@Test
+	@Test()
 	void testFindAll() {
 		List<AutorizacionTerceros> autorizacionTercerosAll = autorizacionTercerosService.getAutorizacionTercerosAll();
-		assertEquals(2, autorizacionTercerosAll.size());
+		assertEquals(3, autorizacionTercerosAll.size());
 	}
 
 }

@@ -45,7 +45,7 @@ public class AutorizacionTercerosController {
     }
 
     //LISTA TODOS LOS REGISTROS
-    @GetMapping
+    @GetMapping({"/listaTodos"})
     public ResponseEntity<Object> getAutorizacionTercerosAll() {
         try {
             List<AutorizacionTerceros> autorizacionTerceros = autorizacionTercerosService.getAutorizacionTercerosAll();
@@ -94,7 +94,7 @@ public class AutorizacionTercerosController {
     }
 
     //LISTA REGISTROS POR ID UNICO DE REGISTRO
-    @GetMapping({"/{id}"})
+    @GetMapping({"/detalleById/{id}"})
     public ResponseEntity<Object> geAutorizacionTerceros(@PathVariable Long id) {
         try{
 
@@ -109,6 +109,7 @@ public class AutorizacionTercerosController {
 
     //AGREGA REGISTRO
     @PostMapping(
+            value = "/creaTercero",
             produces = {Constantes.APPLICATION_JSON_VALUE_UTF8},
             consumes = {Constantes.APPLICATION_JSON_VALUE_UTF8})
     public ResponseEntity<Object> saveAutorizacionTerceros(@RequestBody AutorizacionTercerosDTO autorizacionTercerosDTO) {
@@ -136,7 +137,10 @@ public class AutorizacionTercerosController {
     }
 
     //ACTUALIZA REGISTRO
-    @PutMapping
+    @PutMapping(
+            value = "/actualizaTercero",
+            produces = {Constantes.APPLICATION_JSON_VALUE_UTF8},
+            consumes = {Constantes.APPLICATION_JSON_VALUE_UTF8})
     public ResponseEntity<Object> updateAutorizacionTerceros(@RequestBody AutorizacionTercerosDTO autorizacionTercerosDTO) {
         try{
             ModelMapper modelMapper = new ModelMapper();
@@ -162,7 +166,10 @@ public class AutorizacionTercerosController {
     }
 
     //ELIMINA REGISTRO
-    @DeleteMapping
+    @DeleteMapping(
+                    value = "/eliminaTercero",
+                    produces = {Constantes.APPLICATION_JSON_VALUE_UTF8},
+                    consumes = {Constantes.APPLICATION_JSON_VALUE_UTF8})
     public ResponseEntity<Object>  deleteAutorizacionTerceros(@RequestBody AutorizacionTercerosDTO autorizacionTercerosDTO) {
         try{
             ModelMapper modelMapper = new ModelMapper();
@@ -190,13 +197,27 @@ public class AutorizacionTercerosController {
         try {
             String[] emptyArray = {};
             if(result!= null) {
-                return ResponseHandler.generateResponse(fnc + ": Successfully added data!", HttpStatus.OK, obj , "0");
+                return ResponseHandler.generateResponse(fnc + ": transaccion exitosa!", HttpStatus.OK, obj , "0");
             }
             else
                 return ResponseHandler.generateResponse(fnc + ": Sin data!", HttpStatus.OK, emptyArray , "1");
 
         } catch (HttpStatusCodeException e) {
             return ResponseHandler.generateResponse(fnc + " : "+ e.toString(), HttpStatus.NOT_FOUND, null, "1");
+        }
+    }
+
+    //VALIDACION RUT COMPRADOR DE BONO ESTA REALACIONADO AL BENEFICIARIO COMO TERCERO
+    @GetMapping({"/validaCompraBono/{rutComprador}/{rutBeneficiario}"})
+    public ResponseEntity<Object> validaCompraBono(@PathVariable String rutComprador, @PathVariable String rutBeneficiario) {
+        try {
+            Integer valida = autorizacionTercerosService.getValidaCompraBono(rutComprador, rutBeneficiario);
+            if(valida>=1)
+                return ResponseHandler.generateResponse(valida.toString(), HttpStatus.OK, null, "0");
+            else
+                return ResponseHandler.generateResponse(valida.toString(), HttpStatus.NOT_FOUND, null, "1");
+        } catch (HttpStatusCodeException e) {
+            return ResponseHandler.generateResponse(e.toString(), HttpStatus.NOT_FOUND, null, "1");
         }
     }
 }

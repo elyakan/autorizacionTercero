@@ -38,4 +38,8 @@ public interface AutorizacionTercerosRepository  extends JpaRepository<Autorizac
             nativeQuery = true)
     List<AutorizacionTerceros> getAllByRutEje(String rutEjecutivo);
 
+    @Query(value = "select count(1) FROM TBLAUTORIZACIONTERCEROS where RUN_TERCERO=?1 AND RUN_BENEFICIARIO=?2 AND ID_ESTADO=1",
+            nativeQuery = true)
+    Integer getValidaCompraBono(String rutComprador, String rutBeneficiario);
+
 }

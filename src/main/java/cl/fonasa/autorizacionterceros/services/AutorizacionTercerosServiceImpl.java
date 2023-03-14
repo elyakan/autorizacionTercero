@@ -25,6 +25,9 @@ public class AutorizacionTercerosServiceImpl implements AutorizacionTercerosServ
     public List<AutorizacionTerceros> getAllByRutTer(String rutTercero) {
         return autorizacionTercerosRepository.getAllByRutTer(rutTercero);
     }
+    public Integer getValidaCompraBono(String rutComprador, String rutBeneficario) {
+        return autorizacionTercerosRepository.getValidaCompraBono(rutComprador, rutBeneficario);
+    }
 
     public List<AutorizacionTerceros> getAllByRutEje(String rutEjecutivo) {
         return autorizacionTercerosRepository.getAllByRutEje(rutEjecutivo);
