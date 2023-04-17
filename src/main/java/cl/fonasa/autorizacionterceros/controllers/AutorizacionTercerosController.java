@@ -119,6 +119,18 @@ public class AutorizacionTercerosController {
             //DTO to Entity
             AutorizacionTerceros autorizacionTercerosRequest = modelMapper.map(autorizacionTercerosDTO, AutorizacionTerceros.class);
 
+            //validacion para que no cree el mismo registro con rut beneficiario, rut tercero y estado
+            Integer validaCreacion = this.autorizacionTercerosService.getValidaCreaTercero(autorizacionTercerosRequest.getRunTercero() ,autorizacionTercerosRequest.getRunBeneficiario(),  autorizacionTercerosRequest.getIdEstado());
+            if(validaCreacion!=0){
+                return ResponseHandler.generateResponse("Registro repetido, valide su información", HttpStatus.NOT_FOUND, null, "1");
+            }
+
+            //validacion para que no se inserte mas de tres terceros relacionados
+            Integer validaMaxTercero = this.autorizacionTercerosService.getValidaMaxTercero(autorizacionTercerosRequest.getRunBeneficiario());
+            if(validaMaxTercero>=3){
+                return ResponseHandler.generateResponse("Máximo de terceros habilitados a sido superado, valide su información", HttpStatus.NOT_FOUND, null, "1");
+            }
+
             //insert
             AutorizacionTerceros autorizacionTerceros = this.autorizacionTercerosService.insert(autorizacionTercerosRequest);
 
@@ -146,6 +158,16 @@ public class AutorizacionTercerosController {
             ModelMapper modelMapper = new ModelMapper();
             //DTO to Entity
             AutorizacionTerceros autorizacionTercerosRequest = modelMapper.map(autorizacionTercerosDTO, AutorizacionTerceros.class);
+
+
+
+            //validacion para que no se inserte mas de tres terceros relacionados
+            Integer validaMaxTercero = this.autorizacionTercerosService.getValidaMaxTercero(autorizacionTercerosRequest.getRunBeneficiario());
+            if(validaMaxTercero>=3){
+                if(Integer.parseInt(autorizacionTercerosRequest.getIdEstado()) == 1) {
+                    return ResponseHandler.generateResponse("Máximo de terceros habilitados a sido superado, valide su información", HttpStatus.NOT_FOUND, null, "1");
+                }
+            }
 
             //insert
             AutorizacionTerceros autorizacionTerceros = this.autorizacionTercerosService.insert(autorizacionTercerosRequest);
