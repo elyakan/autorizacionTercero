@@ -93,6 +93,10 @@ public interface AutorizacionTercerosRepository  extends JpaRepository<Autorizac
             nativeQuery = true)
     Integer getValidaMaxTercero(String rutBeneficiario);
 
-
+    @Query(value = "select max(id) " +
+            "FROM TBLAUTORIZACIONTERCEROS " +
+            "where RUN_BENEFICIARIO=?2 and RUN_TERCERO=?1",
+            nativeQuery = true)
+    Long getIdByRutTerRutBen(String rutTercero, String rutBeneficiario);
 
 }
