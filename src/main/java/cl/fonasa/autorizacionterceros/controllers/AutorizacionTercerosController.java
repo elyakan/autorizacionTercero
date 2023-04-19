@@ -159,13 +159,25 @@ public class AutorizacionTercerosController {
             //DTO to Entity
             AutorizacionTerceros autorizacionTercerosRequest = modelMapper.map(autorizacionTercerosDTO, AutorizacionTerceros.class);
 
-
-
             //validacion para que no se inserte mas de tres terceros relacionados
             Integer validaMaxTercero = this.autorizacionTercerosService.getValidaMaxTercero(autorizacionTercerosRequest.getRunBeneficiario());
-            if(validaMaxTercero>=3){
-                if(Integer.parseInt(autorizacionTercerosRequest.getIdEstado()) == 1) {
-                    return ResponseHandler.generateResponse("Máximo de terceros habilitados a sido superado, valide su información", HttpStatus.NOT_FOUND, null, "1");
+            System.out.print(validaMaxTercero);
+
+            int id;
+            Long lid;
+            String rutTercero = autorizacionTercerosRequest.getRunTercero();
+            String rutBeneficiario = autorizacionTercerosRequest.getRunBeneficiario();
+
+            lid = this.autorizacionTercerosRepository.getIdByRutTerRutBen(rutTercero, rutBeneficiario);
+
+            //obtiene el registro de base datos
+            AutorizacionTerceros AutorizacionTercerosAux = this.autorizacionTercerosService.getAutorizacionTercerosById(lid);
+
+            if(Integer.parseInt(autorizacionTercerosRequest.getIdEstado()) != Integer.parseInt(AutorizacionTercerosAux.getIdEstado()) ) {
+                if(Integer.parseInt(autorizacionTercerosRequest.getIdEstado()) != 0 ) {
+                    if (validaMaxTercero >= 3) {
+                        return ResponseHandler.generateResponse("Máximo de terceros habilitados a sido superado, valide su información", HttpStatus.NOT_FOUND, null, "1");
+                    }
                 }
             }
 
@@ -180,8 +192,6 @@ public class AutorizacionTercerosController {
             arryAutorizacionTercero.add(autorizacionTercerosResponse);
 
             return salida(arryAutorizacionTercero, autorizacionTercerosResponse, "updateAutorizacionTerceros");
-
-
         } catch (HttpStatusCodeException e) {
             return new ResponseEntity(new HttpHeaders(), HttpStatus.NOT_FOUND);
         }
