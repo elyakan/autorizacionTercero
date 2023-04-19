@@ -29,6 +29,14 @@ public class AutorizacionTercerosServiceImpl implements AutorizacionTercerosServ
         return autorizacionTercerosRepository.getValidaCompraBono(rutComprador, rutBeneficario);
     }
 
+    public Integer getValidaCreaTercero(String rutTercero, String rutBeneficario, String estado) {
+        return autorizacionTercerosRepository.getValidaCreaTercero(rutTercero, rutBeneficario, estado);
+    }
+
+    public Integer getValidaMaxTercero(String rutBeneficario) {
+        return autorizacionTercerosRepository.getValidaMaxTercero(rutBeneficario);
+    }
+
     public List<AutorizacionTerceros> getAllByRutEje(String rutEjecutivo) {
         return autorizacionTercerosRepository.getAllByRutEje(rutEjecutivo);
     }
@@ -49,5 +57,8 @@ public class AutorizacionTercerosServiceImpl implements AutorizacionTercerosServ
     public AutorizacionTerceros deleteAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros) {
         return this.autorizacionTercerosRepository.save(autorizacionTerceros);
     }
-
+    @Override
+    public Long getIdByRutTerRutBen(String rutTercero, String rutBeneficiario) {
+        return this.autorizacionTercerosRepository.getIdByRutTerRutBen(rutTercero, rutBeneficiario);
+    }
 }
