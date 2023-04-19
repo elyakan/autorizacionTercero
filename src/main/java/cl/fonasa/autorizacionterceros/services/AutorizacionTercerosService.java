@@ -1,64 +1,30 @@
 package cl.fonasa.autorizacionterceros.services;
-
 import java.util.List;
-import org.springframework.stereotype.Service;
 import cl.fonasa.autorizacionterceros.model.AutorizacionTerceros;
-import cl.fonasa.autorizacionterceros.repository.AutorizacionTercerosRepository;
-@Service
-public class AutorizacionTercerosServiceImpl implements AutorizacionTercerosService{
+public interface AutorizacionTercerosService {
 
-    AutorizacionTercerosRepository autorizacionTercerosRepository;
+    List<AutorizacionTerceros> getAutorizacionTercerosAll();
 
-    public AutorizacionTercerosServiceImpl(AutorizacionTercerosRepository autorizacionTercerosRepository) {
-        this.autorizacionTercerosRepository = autorizacionTercerosRepository;
-    }
+    List<AutorizacionTerceros> getAllByRutBen(String rutBeneficiario);
 
+    List<AutorizacionTerceros> getAllByRutTer(String rutTercero);
 
-    public List<AutorizacionTerceros> getAutorizacionTercerosAll() {
-        return autorizacionTercerosRepository.getAllByGroup();
-    }
+    List<AutorizacionTerceros> getAllByRutEje(String rutEjecutivo);
 
-    public List<AutorizacionTerceros> getAllByRutBen(String rutBeneficario) {
-        return autorizacionTercerosRepository.getAllByRutBen(rutBeneficario);
-    }
+    AutorizacionTerceros getAutorizacionTercerosById(Long id);
 
-    public List<AutorizacionTerceros> getAllByRutTer(String rutTercero) {
-        return autorizacionTercerosRepository.getAllByRutTer(rutTercero);
-    }
-    public Integer getValidaCompraBono(String rutComprador, String rutBeneficario) {
-        return autorizacionTercerosRepository.getValidaCompraBono(rutComprador, rutBeneficario);
-    }
+    AutorizacionTerceros insert(AutorizacionTerceros autorizacionTerceros);
 
-    public Integer getValidaCreaTercero(String rutTercero, String rutBeneficario, String estado) {
-        return autorizacionTercerosRepository.getValidaCreaTercero(rutTercero, rutBeneficario, estado);
-    }
+    AutorizacionTerceros updateAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros);
 
-    public Integer getValidaMaxTercero(String rutBeneficario) {
-        return autorizacionTercerosRepository.getValidaMaxTercero(rutBeneficario);
-    }
+    AutorizacionTerceros deleteAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros);
 
-    public List<AutorizacionTerceros> getAllByRutEje(String rutEjecutivo) {
-        return autorizacionTercerosRepository.getAllByRutEje(rutEjecutivo);
-    }
-    public AutorizacionTerceros getAutorizacionTercerosById(Long id) {
-        return (this.autorizacionTercerosRepository.findById(id).orElse(null));
-    }
+    Integer getValidaCompraBono(String rutComprador, String rutBeneficiario);
 
-    @Override
-    public AutorizacionTerceros insert(AutorizacionTerceros autorizacionTerceros) {
-        return this.autorizacionTercerosRepository.save(autorizacionTerceros);
+    Integer getValidaCreaTercero(String rutComprador, String rutBeneficiario, String estado);
 
-    }
-    @Override
-    public AutorizacionTerceros updateAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros) {
-        return this.autorizacionTercerosRepository.save(autorizacionTerceros);
-    }
-    @Override
-    public AutorizacionTerceros deleteAutorizacionTerceros(AutorizacionTerceros autorizacionTerceros) {
-        return this.autorizacionTercerosRepository.save(autorizacionTerceros);
-    }
-    @Override
-    public Long getIdByRutTerRutBen(String rutTercero, String rutBeneficiario) {
-        return this.autorizacionTercerosRepository.getIdByRutTerRutBen(rutTercero, rutBeneficiario);
-    }
+    Integer getValidaMaxTercero(String rutBeneficiario);
+
+    Long getIdByRutTerRutBen(String rutTercero, String rutBeneficiario);
+
 }
